@@ -7,11 +7,10 @@ enums are necessary.
 
 ### Installation and use
 
-Download the and module and save it to package.json. 
+Install the and module and save it to package.json. 
 
 ```
 npm install ts-enum-tools --save
-
 ```
 
 Import the type of functionality needed, depending on whether an enum is a type of flag or string. 
@@ -47,7 +46,7 @@ export interface AbFlagsMap {
 }
 ```
 
-Import the EnumFlagsType and generate a function that returns tools when given a number. The tools function 
+Generate a function that returns tools when given a number. The tools function 
 is obtained by calling the EnumFlagsType (factory method). 
 
 ```
@@ -56,35 +55,35 @@ import { EnumFlagsType, EnumFlagsTool } from "ts-enum-tools";
 var abFlgFunc = EnumFlagsType<AbFlags, typeof AbFlags>(AbFlags);
 ```
 
-If you provide an additional interface that describes the values of the enum as 
-boolean, then you can replace the line above and enhance intellisense results, like so.
+Provide an additional interface that describes the values of the enum as 
+boolean, and replace the line above as shown in order to enhance intellisense results.
 
 ```
 var abFlgFunc = EnumFlagsType<AbFlags, AbFlagsMap>(AbFlags);
 ```
 
-If a property name is provided, then it's used to assign tools to the Number.prototype[prop] 
+If a property name is provided, then it's used to assign tools to the Number.prototype.prop 
 (warning: this may be illegal in some cultures). 
 
 ```
 var abFlgFunc = EnumFlagsType<AbFlags, AbFlagsMap>(AbFlags, "abFlgProp");
 ```
 
-All these techniques return a function that can be used to bind to a value and return
-a set of tools that are valid for that value. Prototypes are used to reduce the overhead to
-a minimum.
+All of the above variations return a function that can be used to bind a value and return
+a set of tools which are valid for that specific value. Prototypes are used to reduce the 
+overhead to a minimum.
 
 #### Flag testing with returned function's methods
 
 The tools function can be put to work on ordinary number types. These are by far the fastest
-methods, because the getters shown below will add significant overhead.
+methods, because the getters shown next can add significant overhead.
 
 ```
-// Tools function work on enum | number types.
+// Tools function works on enum | number types.
 var abFlgEnum: AbFlags = AbFlags.isClonable | AbFlags.isSortable;
 
-assert(abFlgFunc(abFlgEnum).map.isClonable);
-assert(!abFlgFunc(abFlgEnum).map.isMovable);
+assert(abFlgFunc(abFlgEnum).state.isClonable);
+assert(!abFlgFunc(abFlgEnum).state.isMovable);
 assert(abFlgFunc(abFlgEnum).all(AbFlags.isClonable) === true);
 assert(abFlgFunc(abFlgEnum).all(AbFlags.isMovable) === false);
 assert(abFlgFunc(abFlgEnum).all(AbFlags.isClonable | AbFlags.isSortable) === true);
@@ -114,8 +113,8 @@ export interface AbNumber extends Number {
 // Tools properties are available on extended number types
 var abFlgVal: AbNumber = AbFlags.isClonable | AbFlags.isSortable;
 
-assert(abFlgVal.abFlgProp.map.isClonable);
-assert(!abFlgVal.abFlgProp.map.isMovable);
+assert(abFlgVal.abFlgProp.state.isClonable);
+assert(!abFlgVal.abFlgProp.state.isMovable);
 assert(abFlgVal.abFlgProp.all(AbFlags.isClonable) === true);
 assert(abFlgVal.abFlgProp.all(AbFlags.isMovable) === false);
 assert(abFlgVal.abFlgProp.all(AbFlags.isClonable | AbFlags.isSortable) === true);
@@ -161,7 +160,7 @@ number enum types also apply to string types.
 var abStrFunc = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrProp");
 ```
 
-The tools function includes an str getter that is typed as a string. This helps reduce the  
+The tools function includes getters for **key** and **val** that are typed as string. This helps reduce the  
 need to cast the enum to a string.
 
 ```
@@ -177,19 +176,21 @@ The tools function can be put to work on ordinary string types.
 // Tools function works on enum | number types
 var abStrEnum: AbStrings = AbStrings.Clone;
 
-assert(abStrFunc(abStrEnum).map.Clone);
-assert(!abStrFunc(abStrEnum).map.Select);
-assert(abStrFunc(abStrEnum).equals(AbStrings.Clone) === true);
-assert(abStrFunc(abStrEnum).toString() === "Clone");
+assert(abStrFunc(abStrEnum).state.Clone);
+assert(!abStrFunc(abStrEnum).state.Select);
+assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
+assert(!abStrFunc(abStrEnum).equals(AbStrings.Move));
+assert(abStrFunc(abStrEnum).toStringKey() === "Clone");
+assert(abStrFunc(abStrEnum).toStringVal() === "clone");
 ```
 
 #### Value testing with String.prototype.prop's methods 
 
-Once again, the getters are easier to use, but they may be slower. 
+As previously mentioned, the getters are easier to use, but they may be slower. 
 The methods are only assigned to the number prototype if a property name is provided. 
 
 ```
-//Add Interface that extends a Number with a tools property
+// Add Interface that extends a Number with a tools property
 export interface AbString extends String {
   abStrProp?: EnumStringsTool<AbStrings, AbStringsMap>;
 }
@@ -197,15 +198,15 @@ export interface AbString extends String {
 // Tools properties are then accessible on extended string types
 var abStrVal: AbString = abStrFunc.str.Clone;
 
-assert(abStrVal.abStrProp.map.Clone);
-assert(!abStrVal.abStrProp.map.Move);
+assert(abStrVal.abStrProp.state.Clone);
+assert(!abStrVal.abStrProp.state.Move);
 assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
-assert(abStrVal.abStrProp.equals(AbStrings.Clone) === true);
-assert(abStrVal.abStrProp.equals(AbStrings.Move) === false);
-assert(abStrVal.abStrProp.toString() === "Clone");
+assert(!abStrVal.abStrProp.equals(AbStrings.Move));
+assert(abStrVal.abStrProp.toStringKey() === "Clone");
+assert(abStrVal.abStrProp.toStringVal() === "clone");
 ```
 
-#### Filtering keys 
+#### Filtering strign enum keys 
 
 It may be beneficial to restrict the values that are recognized as keys. An optional filter function
 may be provided to do so.
