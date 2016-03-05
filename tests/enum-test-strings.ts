@@ -9,25 +9,25 @@ var mocha = require('mocha');
 
 import { EnumStringsType, EnumStringsTool } from '../index';
 
-    // Declare a TypeScript enum
-    export enum AbStrings {
-      None      = <any> "none",
-      Select    = <any> "sel",
-      Move      = <any> "mov",
-      Edit      = <any> "edit",
-      Sort      = <any> "sort",
-      Clone     = <any> "clone"
-    }
+// Declare a TypeScript enum
+export enum AbStrings {
+  None      = <any> "none",
+  Select    = <any> "sel",
+  Move      = <any> "mov",
+  Edit      = <any> "edit",
+  Sort      = <any> "sort",
+  Clone     = <any> "clone"
+}
 
-    // Create a map for string output and comparison
-    export interface AbStringsMap {
-        None:   any;
-        Select: any;
-        Move:   any;
-        Edit:   any;
-        Sort:   any;
-        Clone:  any;
-    }
+// Create a map for string output and comparison
+export interface AbStringsMap {
+    None:   any;
+    Select: any;
+    Move:   any;
+    Edit:   any;
+    Sort:   any;
+    Clone:  any;
+}
 
 // Declare a secondary closure validation enum
 export enum AbStringsChecked {
@@ -35,26 +35,26 @@ export enum AbStringsChecked {
   Better    = <any> "better",
 }
 
-    // Method 1: Get function that accepts a String and returns a set of tools
-    var abStrFunc = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrProp");
+// Method 1: Get function that accepts a String and returns a set of tools
+var abStrFunc = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrProp");
 
-    // The tools function includes getters of type string, when map is provided
-    assert(abStrFunc.key.Clone === "Clone");             // Returns key
-    assert(abStrFunc.val.Clone === "clone");             // Returns value
+// The tools function includes getters of type string, when map is provided
+assert(abStrFunc.key.Clone === "Clone");             // Returns key
+assert(abStrFunc.val.Clone === "clone");             // Returns value
 
-    var abStrFiltered = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrFiltered", function(k) {
-      return (k != k.toLowerCase()); 
-    });
+var abStrFiltered = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrFiltered", function(k) {
+  return (k != k.toLowerCase()); 
+});
 
-    // Tools function works on enum types
-    var abStrEnum: AbStrings = AbStrings.Clone;
+// Tools function works on enum types
+var abStrEnum: AbStrings = AbStrings.Clone;
 
-    assert(abStrFunc(abStrEnum).state.Clone);
-    assert(!abStrFunc(abStrEnum).state.Select);
-    assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
-    assert(!abStrFunc(abStrEnum).equals(AbStrings.Move));
-    assert(abStrFunc(abStrEnum).toStringKey() === "Clone");
-    assert(abStrFunc(abStrEnum).toStringVal() === "clone");
+assert(abStrFunc(abStrEnum).state.Clone);
+assert(!abStrFunc(abStrEnum).state.Select);
+assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
+assert(!abStrFunc(abStrEnum).equals(AbStrings.Move));
+assert(abStrFunc(abStrEnum).toStringKey() === "Clone");
+assert(abStrFunc(abStrEnum).toStringVal() === "clone");
 
 // Method 2: Add Interface that extends a Number with a tools property
 export interface AbString extends String {
