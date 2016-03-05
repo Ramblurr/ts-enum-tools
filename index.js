@@ -1,7 +1,7 @@
 function EnumFlagsType(enumeration, prop) {
     var keys = {};
     var hash = Object.keys(enumeration).reduce(function (obj, k) {
-        if (isNaN(k) && enumeration[k]) {
+        if (isNaN(k)) {
             obj[k] = enumeration[k];
         }
         keys[k] = k;
@@ -12,14 +12,17 @@ function EnumFlagsType(enumeration, prop) {
     };
     Object.keys(hash).forEach(function (k) {
         Object.defineProperty(State.prototype, k, { get: function () {
-                return ((this.methods.val & +hash[k]) === +hash[k]);
+                return !!hash[k] ? ((this.methods.val & +hash[k]) === +hash[k]) : !this.methods.val;
             } });
     });
     var Methods = function (val) {
-        this.val = val;
+        this.val = +val;
         this.state = new State(this);
     };
-    Methods.prototype.all = function (flags) {
+    Methods.prototype.eql = function (flags) {
+        return (this.val === +flags);
+    };
+    Methods.prototype.has = function (flags) {
         return ((this.val & +flags) === +flags);
     };
     Methods.prototype.any = function (flags) {
@@ -27,12 +30,12 @@ function EnumFlagsType(enumeration, prop) {
     };
     Methods.prototype.toArray = function () {
         return Object.keys(hash).filter(function (k) {
-            return ((this.val & +hash[k]) === +hash[k]);
+            return !!hash[k] && ((this.val & +hash[k]) === +hash[k]);
         }.bind(this));
     };
     Methods.prototype.toString = function () {
         return Object.keys(hash).filter(function (k) {
-            return ((this.val & +hash[k]) === +hash[k]);
+            return !!hash[k] && ((this.val & +hash[k]) === +hash[k]);
         }.bind(this)).join(' | ');
     };
     var BindValue = function BindValue(val) {
@@ -74,7 +77,7 @@ function EnumStringsType(enumeration, prop, validKeysFilter) {
     };
     Object.keys(hash).forEach(function (k) {
         Object.defineProperty(State.prototype, k, { get: function () {
-                return ((this.methods.str) === hash[k]);
+                return (this.methods.str === hash[k]);
             } });
     });
     var Methods = function (str) {
@@ -110,5 +113,3 @@ function EnumStringsType(enumeration, prop, validKeysFilter) {
     return BindString;
 }
 exports.EnumStringsType = EnumStringsType;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = EnumFlagsType;

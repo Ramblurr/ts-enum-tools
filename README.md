@@ -240,26 +240,20 @@ The following output give an idea of the performance of the flag tests. The tool
 considerably faster than the tools prototype methods. This should be taken into consideration when 
 the amount of data being processed is significant.
 
-```
-  
-  EnumFlagsType: Native number binding
-    Native flags: isSortable, isClonable
-      √ should allow cloning
-      √ should prevent moving
-      √ should allow sorting
-      √ should have property of isClonable that is true
-      √ should have property of isMovable that is false
-      √ should list (2) set flags
-      √ should ouput a string
-      √ should maintain closure integrity when re-used
-      √ should be immutable value when using function methods
-      √ should not be immutable value when using prototype properties
-      √ should perform very well using function methods [2500000] (145ms)
-      √ should perform reasonably well using prototype all [1000000] (266ms)
-      √ should perform reasonably well using prototype any [1000000] (267ms)
-      √ should perform reasonably well using prototype map [1000000] (275ms)
+All times are reported in milliseconds:
 
-  EnumStringsType: Native string binding
+```
+          functions   properties     baseline
+ Nodejs          71          352           21
+ Chrome          82          408           22  
+ FireFox         50          580           22  
+ IE            1537          840         1985  
+```
+
+The output of the tests give an idea how different flag combination scenarios are handled.
+
+```
+  EnumStringsType: Various tests
     Native strings: [object Object]
       √ should clone
       √ should not move
@@ -269,6 +263,29 @@ the amount of data being processed is significant.
       √ should have property of Move that is false
       √ should ouput a string
 
-  21 passing (1s)
-  
+  EnumFlagsType: Various tests
+    Native flags: isSortable, isClonable
+      √ should handle case val(1000) > has(1000):t  any(1000):t  eql(1000):t  state[1000]:t  state[0100]:f
+      √ should handle case val(1100) > has(1100):t  any(1100):t  eql(1100):t  state[1000]:t  state[0100]:t
+      √ should handle case val(0100) > has(1000):f  any(1000):f  eql(1000):f  state[1000]:f  state[0100]:t
+      √ should handle case val(1100) > has(0100):t  any(0100):t  eql(0100):f  state[1000]:t  state[0100]:t
+      √ should handle case val(0100) > has(1100):f  any(1100):t  eql(1100):f  state[1000]:f  state[0100]:t
+      √ should handle case val(0000) > has(1000):f  any(1000):t  eql(1000):f  state[1000]:f  state[0100]:f
+      √ should handle case val(0000) > has(0000):t  any(0000):f  eql(0000):t  state[0000]:t  state[0100]:f
+      √ should handle invalid bit combinations in values and arguments
+      √ should support various flags
+      √ should support various properties
+      √ should return an array consisting of (2) flags
+      √ should ouput a string similar to: "isSortable | isClonable"
+      √ should maintain closure integrity and support re-use
+      √ should be immutable value when using function methods
+      √ should not be immutable value when using prototype properties
+      √ should perform function(value) tools over (1000000) iterations (71ms)
+      √ should perform using value.has property over (1000000) iterations (352ms)
+      √ should perform using value.any property over (1000000) iterations (350ms)
+      √ should perform using value.state property over (1000000) iterations (372ms)
+      √ inline logical compairison baseline (5000000) iterations
+
+
+  27 passing (1s)
 ```

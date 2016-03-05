@@ -4,9 +4,10 @@
   "description": "Tools for evaluating TypeScript enum types",
   "main": "index.js",
   "typings": "index",
+  "browser": { "./lib-cov/mocha": false },  
   "scripts": {
     "build": "tsc",
-    "test": "./node_modules/.bin/mocha ./tests"
+    "test": "./node_modules/.bin/mocha ./tests/index.js"
   },
   "repository": {
     "type": "git",

@@ -1,7 +1,8 @@
 export interface EnumFlagsTool<E, e> {
     state: e;
+    eql: (a: E) => boolean;
+    has: (a: E) => boolean;
     any: (a: E) => boolean;
-    all: (a: E) => boolean;
     toArray: () => string[];
     toString: () => string;
 }
@@ -31,4 +32,3 @@ export interface EnumStringsFunc<E, e> {
 }
 export declare function EnumFlagsType<E, e>(enumeration: any, prop?: string): EnumFlagsFunc<E, e>;
 export declare function EnumStringsType<E, e>(enumeration: any, prop?: string, validKeysFilter?: Function): EnumStringsFunc<E, e>;
-export default EnumFlagsType;

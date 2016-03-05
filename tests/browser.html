@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Enum Tests</title>
+  <link rel="stylesheet" media="all" href="../node_modules/mocha/mocha.css">
+  <style>
+    #mocha .test a.replay {
+      color: #000;
+      font-size: 36px;
+      background: none;
+      width: 30px;
+      top: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="mocha">
+    <h1><a href="?grep=">Enum Tests</a></h1>
+  </div>
+  <div id="messages"></div>
+  <div id="fixtures"></div>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/should/should.js"></script>
+  <script>
+    
+    // Setup mocha, so describe & it become global
+    mocha.setup('bdd');    
+    
+    // Modules will insert exports into this global construct
+    var exports = {
+      should: should,
+      assert: function(val) {
+        if (!val) throw "invalid assertion";
+      },
+    };
+    
+    // Providing a require polyfill for the browser run modules
+    var require = function(ref) {
+      return exports[ref] || exports;
+    }; 
+    
+  </script>
+  <script src="../index.js"></script>
+  <script src="index.js"></script>
+  <script>mocha.run();</script>
+</body>
+</html>

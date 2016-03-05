@@ -2,8 +2,9 @@
 /** Interface describing the tools for flag enums */
 export interface EnumFlagsTool<E, e> {
   state: e,  // Returns map of T/F values
+  eql: (a: E) => boolean;
+  has: (a: E) => boolean;
   any: (a: E) => boolean;
-  all: (a: E) => boolean;
   toArray: () => string[];
   toString: () => string;
 }
@@ -41,7 +42,7 @@ export function EnumFlagsType<E, e>(enumeration, prop?: string): EnumFlagsFunc<E
   var keys = {};  
   var hash = Object.keys(enumeration).reduce(function(obj, k) {
     // Excludes bi-directional numeric keys
-    if (isNaN(<any>k) && enumeration[k]) { 
+    if (isNaN(<any>k)) {
       obj[k] = enumeration[k];
     }
     keys[k] = k;
@@ -54,16 +55,19 @@ export function EnumFlagsType<E, e>(enumeration, prop?: string): EnumFlagsFunc<E
   };
   Object.keys(hash).forEach(function(k) {
     Object.defineProperty(State.prototype, k, { get: function() {
-      return ((this.methods.val & +hash[k]) === +hash[k]);
+      return !!hash[k] ? ((this.methods.val & +hash[k]) === +hash[k]) : !this.methods.val;
     }});
   });
 
   // New instance created per each binding
   var Methods = function(val) {
-    this.val = val;
+    this.val = +val;
     this.state = new State(this);
   };
-  Methods.prototype.all = function(flags) {
+  Methods.prototype.eql = function(flags) {
+    return (this.val === +flags);
+  };
+  Methods.prototype.has = function(flags) {
     return ((this.val & +flags) === +flags);
   };
   Methods.prototype.any = function(flags) {
@@ -71,12 +75,12 @@ export function EnumFlagsType<E, e>(enumeration, prop?: string): EnumFlagsFunc<E
   };
   Methods.prototype.toArray = function() {
     return Object.keys(hash).filter(function(k) {
-      return ((this.val & +hash[k]) === +hash[k]); // all bits weed out combos
+      return !!hash[k] && ((this.val & +hash[k]) === +hash[k]); // all bits weed out combos
     }.bind(this));
   };
   Methods.prototype.toString = function() {
     return Object.keys(hash).filter(function(k) {
-      return ((this.val & +hash[k]) === +hash[k]);
+      return !!hash[k] && ((this.val & +hash[k]) === +hash[k]);
     }.bind(this)).join(' | ');
   };
 
@@ -130,7 +134,7 @@ export function EnumStringsType<E, e>(enumeration, prop?: string, validKeysFilte
   };
   Object.keys(hash).forEach(function(k) {
     Object.defineProperty(State.prototype, k, { get: function() {
-      return ((this.methods.str) === hash[k]);
+      return (this.methods.str === hash[k]);
     }});
   });
 
@@ -173,5 +177,3 @@ export function EnumStringsType<E, e>(enumeration, prop?: string, validKeysFilte
 
   return BindString;
 }
-
-export default EnumFlagsType;

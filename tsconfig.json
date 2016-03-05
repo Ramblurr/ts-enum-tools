@@ -9,8 +9,8 @@
         "declaration": true,
         "suppressImplicitAnyIndexErrors": true
     },
-    "filesGlob": [
-        "./**/*.ts",
-        "!./node_modules/**/*.ts"
+    "exclude": [
+      ".unused",
+      "node_modules"
     ]
 }
