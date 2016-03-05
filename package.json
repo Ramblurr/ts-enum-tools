@@ -1,0 +1,31 @@
+{
+  "name": "ts-enum-tools",
+  "version": "0.1.0",
+  "description": "Tools for evaluating TypeScript enum types",
+  "main": "index.js",
+  "typings": "index",
+  "scripts": {
+    "build": "tsc",
+    "test": "./node_modules/.bin/mocha ./tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djabraham/ts-enum-tools.git"
+  },
+  "keywords": [
+    "TypeScript",
+    "enum",
+    "flag",
+    "string"
+  ],
+  "author": "abrahamdanielj@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/djabraham/ts-enum-tools/issues"
+  },
+  "homepage": "https://github.com/djabraham/ts-enum-tools#readme",
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "should": "^8.2.2"
+  }  
+}
