@@ -151,7 +151,7 @@ export interface AbStringsMap {
 }
 ```
 
-Get function that accepts a Number and returns a set of tools. The same variations that are available on 
+Get function that accepts a String and returns a set of tools. The same variations that are available on 
 number enum types also apply to string types.
 
 ```
