@@ -206,7 +206,7 @@ assert(abStrVal.abStrProp.toStringKey() === "Clone");
 assert(abStrVal.abStrProp.toStringVal() === "clone");
 ```
 
-#### Filtering strign enum keys 
+#### Filtering string enum keys 
 
 It may be beneficial to restrict the values that are recognized as keys. An optional filter function
 may be provided to do so.
@@ -219,11 +219,50 @@ var abStrFiltered = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrFi
 console.log(abStrFiltered.toArray());
 
 [ 
-  { key: 'None', val: 'none' },
-  { key: 'Select', val: 'sel' },
-  { key: 'Move', val: 'mov' },
-  { key: 'Edit', val: 'edit' },
-  { key: 'Sort', val: 'sort' },
-  { key: 'Clone', val: 'clone' } 
+  { key: 'None',    val: 'none' },
+  { key: 'Select',  val: 'sel' },
+  { key: 'Move',    val: 'mov' },
+  { key: 'Edit',    val: 'edit' },
+  { key: 'Sort',    val: 'sort' },
+  { key: 'Clone',   val: 'clone' } 
 ]
+```
+
+### Test results
+
+The following output give an idea of the performance of the flag tests. The function is 
+considerably faster than the prototype methods. This should be taken into consideration when 
+the amount of data being processed is significant.
+
+```
+  
+  EnumFlagsType: Native number binding
+    Native flags: isSortable, isClonable
+      √ should allow cloning
+      √ should prevent moving
+      √ should allow sorting
+      √ should have property of isClonable that is true
+      √ should have property of isMovable that is false
+      √ should list (2) set flags
+      √ should ouput a string
+      √ should maintain closure integrity when re-used
+      √ should be immutable value when using function methods
+      √ should not be immutable value when using prototype properties
+      √ should perform very well using function methods [2500000] (145ms)
+      √ should perform reasonably well using prototype all [1000000] (266ms)
+      √ should perform reasonably well using prototype any [1000000] (267ms)
+      √ should perform reasonably well using prototype map [1000000] (275ms)
+
+  EnumStringsType: Native string binding
+    Native strings: [object Object]
+      √ should clone
+      √ should not move
+      √ should not sort
+      √ should maintain closure integrity when re-used
+      √ should have property of Clone that is true
+      √ should have property of Move that is false
+      √ should ouput a string
+
+  21 passing (1s)
+  
 ```
