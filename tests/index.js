@@ -287,7 +287,7 @@ describe('EnumFlagsType: Various tests', function () {
             return ((this.val & flag) === flag);
         };
         var iterationsBase = 5000000;
-        it("inline logical compairison baseline (" + iterationsBase + ") iterations", function () {
+        it("inline logical operation comparison baseline (" + iterationsBase + ") iterations", function () {
             var timer = Timer();
             var val1 = AbFlags.isMovable | AbFlags.isSortable;
             var val2 = AbFlags.isClonable | AbFlags.isSortable;

@@ -280,12 +280,16 @@ The output of the tests give an idea how different flag combination scenarios ar
       √ should maintain closure integrity and support re-use
       √ should be immutable value when using function methods
       √ should not be immutable value when using prototype properties
-      √ should perform function(value) tools over (1000000) iterations (71ms)
-      √ should perform using value.has property over (1000000) iterations (352ms)
-      √ should perform using value.any property over (1000000) iterations (350ms)
-      √ should perform using value.state property over (1000000) iterations (372ms)
-      √ inline logical compairison baseline (5000000) iterations
+      √ should perform function(value) tools over (1000000) iterations (69ms)
+      √ should perform using value.has property over (1000000) iterations (304ms)
+      √ should perform using value.any property over (1000000) iterations (292ms)
+      √ should perform using value.state property over (1000000) iterations (315ms)
+      √ inline logical operation comparison baseline (5000000) iterations
+
+
+  Stats Func/Prop/Base:     68    304     22
 
 
   27 passing (1s)
+
 ```

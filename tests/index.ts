@@ -345,7 +345,7 @@ describe('EnumFlagsType: Various tests', function() {
       let x = 0;
       let flag = false;
       for (let i = 0; i < iterationsFunc; i++) {
-        // A function is resuseable, so it is typically faster when using repeatedly
+        // A function is resuseable, so it is typically faster when repeated use is likely
         let toolsPerInteration = abFlgFunc(variousFlagValues[x]);
         flag = toolsPerInteration.has(AbFlags.isClonable);
         flag = toolsPerInteration.any(AbFlags.isClonable);
@@ -395,7 +395,7 @@ describe('EnumFlagsType: Various tests', function() {
     };
     
     let iterationsBase = 5000000;
-    it(`inline logical compairison baseline (${iterationsBase}) iterations`, function() {
+    it(`inline logical operation comparison baseline (${iterationsBase}) iterations`, function() {
       let timer = Timer();
       
       let val1: any = AbFlags.isMovable | AbFlags.isSortable;
