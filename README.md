@@ -50,8 +50,6 @@ Generate a function that returns tools when given a number. The tools function
 is obtained by calling the EnumFlagsType (factory method). 
 
 ```
-import { EnumFlagsType, EnumFlagsTool } from "ts-enum-tools";
-
 var abFlgFunc = EnumFlagsType<AbFlags, typeof AbFlags>(AbFlags);
 ```
 
@@ -89,7 +87,7 @@ assert(abFlgFunc(abFlgEnum).all(AbFlags.isMovable) === false);
 assert(abFlgFunc(abFlgEnum).all(AbFlags.isClonable | AbFlags.isSortable) === true);
 assert(abFlgFunc(abFlgEnum).all(AbFlags.isMovable | AbFlags.isSortable) === false);
 assert(abFlgFunc(abFlgEnum).any(AbFlags.isMovable) === false);
-assert(abFlgFunc(abFlgEnum).toList().length === 2);
+assert(abFlgFunc(abFlgEnum).toArray().length === 2);
 assert(abFlgFunc(abFlgEnum).toString().indexOf("isSortable") + 1);
 assert(abFlgFunc(abFlgEnum).toString().indexOf("isClonable") + 1);
 ```
@@ -121,7 +119,7 @@ assert(abFlgVal.abFlgProp.all(AbFlags.isClonable | AbFlags.isSortable) === true)
 assert(abFlgVal.abFlgProp.all(AbFlags.isMovable | AbFlags.isSortable) === false);
 assert(abFlgVal.abFlgProp.any(AbFlags.isMovable | AbFlags.isSortable) === true);
 assert(abFlgVal.abFlgProp.any(AbFlags.isMovable) === false);
-assert(abFlgVal.abFlgProp.toList().length === 2);
+assert(abFlgVal.abFlgProp.toArray().length === 2);
 assert(abFlgVal.abFlgProp.toString().indexOf("isSortable") + 1);
 assert(abFlgVal.abFlgProp.toString().indexOf("isClonable") + 1);
 ```
@@ -209,13 +207,13 @@ assert(abStrVal.abStrProp.toStringVal() === "clone");
 #### Filtering string enum keys 
 
 It may be beneficial to restrict the values that are recognized as keys. An optional filter function
-may be provided to do so.
+may be provided to do so. The function receives each potential key and returns T/F to indicate inclusion.
 
 ```
 // Filter asserts that valid keys are capitalized 
-var abStrFiltered = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrFiltered", function(k) {
-  return (k != k.toLowerCase());  
-});
+var abStrFiltered = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrFiltered", 
+                                                  function(k) { return (k != k.toLowerCase()); });
+  
 console.log(abStrFiltered.toArray());
 
 [ 
@@ -230,8 +228,8 @@ console.log(abStrFiltered.toArray());
 
 ### Test results
 
-The following output give an idea of the performance of the flag tests. The function is 
-considerably faster than the prototype methods. This should be taken into consideration when 
+The following output give an idea of the performance of the flag tests. The tools function is 
+considerably faster than the tools prototype methods. This should be taken into consideration when 
 the amount of data being processed is significant.
 
 ```
