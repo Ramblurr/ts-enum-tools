@@ -19,14 +19,14 @@ export enum AbStrings {
   Clone     = <any> "clone"
 }
 
-// Create a map for string output
+// Create a map for string output and comparison
 export interface AbStringsMap {
-    None:   string;
-    Select: string;
-    Move:   string;
-    Edit:   string;
-    Sort:   string;
-    Clone:  string;      
+    None:   any;
+    Select: any;
+    Move:   any;
+    Edit:   any;
+    Sort:   any;
+    Clone:  any;
 }
 
 // Declare a secondary closure validation enum
@@ -64,7 +64,7 @@ export interface AbString extends String {
 // Tools properties are then accessible on extended string types
 var abStrVal: AbString = abStrFunc.val.Clone;
 
-assert(abStrVal.abStrProp.state.Clone);
+assert(abStrVal.abStrProp.state.Clone === true);
 assert(!abStrVal.abStrProp.state.Move);
 assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
 assert(!abStrVal.abStrProp.equals(AbStrings.Move));

@@ -8,12 +8,12 @@ export declare enum AbStrings {
     Clone,
 }
 export interface AbStringsMap {
-    None: string;
-    Select: string;
-    Move: string;
-    Edit: string;
-    Sort: string;
-    Clone: string;
+    None: any;
+    Select: any;
+    Move: any;
+    Edit: any;
+    Sort: any;
+    Clone: any;
 }
 export declare enum AbStringsChecked {
     Good,

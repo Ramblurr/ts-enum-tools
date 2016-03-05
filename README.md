@@ -140,14 +140,14 @@ export enum AbStrings {
   Clone     = <any> "clone"
 }
 
-// Create a map for string output (recommended)
+// Create a map for string output and comparison
 export interface AbStringsMap {
-    None:   string;
-    Select: string;
-    Move:   string;
-    Edit:   string;
-    Sort:   string;
-    Clone:  string;      
+    None:   any;
+    Select: any;
+    Move:   any;
+    Edit:   any;
+    Sort:   any;
+    Clone:  any;
 }
 ```
 

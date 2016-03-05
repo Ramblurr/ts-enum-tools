@@ -30,7 +30,7 @@ assert(!abStrFunc(abStrEnum).equals(AbStrings.Move));
 assert(abStrFunc(abStrEnum).toStringKey() === "Clone");
 assert(abStrFunc(abStrEnum).toStringVal() === "clone");
 var abStrVal = abStrFunc.val.Clone;
-assert(abStrVal.abStrProp.state.Clone);
+assert(abStrVal.abStrProp.state.Clone === true);
 assert(!abStrVal.abStrProp.state.Move);
 assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
 assert(!abStrVal.abStrProp.equals(AbStrings.Move));
