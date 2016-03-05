@@ -1,6 +1,6 @@
 {
   "name": "ts-enum-tools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tools for evaluating TypeScript enum types",
   "main": "index.js",
   "typings": "index",
@@ -27,5 +27,5 @@
   "devDependencies": {
     "mocha": "^2.4.5",
     "should": "^8.2.2"
-  }  
+  }
 }
