@@ -48,7 +48,7 @@ assert(abStrFunc.val.Clone === "clone");             // Returns value
 // Tools function works on enum types
 var abStrEnum: AbStrings = AbStrings.Clone;
 
-console.log(abStrFunc(abStrEnum).equals(AbStrings.Move));
+// console.log(abStrFunc(abStrEnum).equals(AbStrings.Move));
 
 assert(abStrFunc(abStrEnum).state.Clone);
 assert(!abStrFunc(abStrEnum).state.Select);

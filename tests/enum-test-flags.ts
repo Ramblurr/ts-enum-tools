@@ -16,7 +16,8 @@ export enum AbFlags {
   isMovable     = 1 << 27,
   isEditable    = 1 << 28,
   isSortable    = 1 << 30,
-  isClonable    = 1 << 31   // maximum!
+  isClonable    = 1 << 31,   // maximum!
+  isSelectSort  = isSelectable | isSortable   // example combo flag
 }
 
 // Create a map for number output

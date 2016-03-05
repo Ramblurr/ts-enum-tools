@@ -22,7 +22,10 @@ import { EnumFlagsType, EnumFlagsTool } from 'ts-enum-tools';
 
 ### Flags Type Enums
 
-Declare a TypeScript enum and an interface that describes the values as a unique 32 bit number.
+Declare a TypeScript enum beginning with unique 32 bit numbers composed of a single bit. 
+Combination flags can then be added, using a logical OR (i.e. isSelectable | isSortable).
+It's also advisable to declare an inteface mirroring the enum, that better describes the 
+boolean output provided by some of the tools.
 
 ```
 // Declare a TypeScript enum using bit values
@@ -32,7 +35,8 @@ export enum AbFlags {
   isMovable     = 1 << 27,
   isEditable    = 1 << 28,
   isSortable    = 1 << 30,
-  isClonable    = 1 << 31   // maximum!
+  isClonable    = 1 << 31,   // maximum!
+  isSelectSort  = isSelectable | isSortable   // example combo flag
 }
 
 // Create a map for boolean output (recommended)
@@ -43,6 +47,7 @@ export interface AbFlagsMap {
   isEditable:     boolean;
   isSortable:     boolean;
   isClonable:     boolean;         
+  isSelectSort:   boolean;
 }
 ```
 
@@ -127,7 +132,10 @@ assert(abFlgVal.abFlgProp.toString().indexOf("isClonable") + 1);
 
 ### String Type Enums
 
-Declare a TypeScript enum and an interface that describes the values as a string.
+Declare a TypeScript enum using string values. Since these are not officialy supported
+in TypeScript yet, it is necessary to cast them as a type of 'any'. It's also advisable 
+to declare an inteface mirroring the enum, that better describes the string or boolean 
+output provided by some of the tools.
 
 ```
 // Declare a TypeScript enum using unique string values
