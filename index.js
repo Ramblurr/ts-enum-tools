@@ -85,7 +85,11 @@ function EnumStringsType(enumeration, prop, validKeysFilter) {
         return (this.str === str);
     };
     Methods.prototype.toStringKey = function () {
-        return hash[this.str];
+        for (var k in hash) {
+            if (hash[k] === this.str) {
+                return k;
+            }
+        }
     };
     Methods.prototype.toStringVal = function () {
         return this.str;

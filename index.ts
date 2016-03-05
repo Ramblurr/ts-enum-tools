@@ -143,7 +143,11 @@ export function EnumStringsType<E, e>(enumeration, prop?: string, validKeysFilte
     return (this.str === str);
   };
   Methods.prototype.toStringKey = function() {
-    return hash[this.str];
+    for(var k in hash) {
+      if(hash[k] === this.str) { 
+        return k; 
+      }
+    }   
   };
   Methods.prototype.toStringVal = function() {
     return this.str;

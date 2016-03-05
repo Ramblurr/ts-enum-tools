@@ -36,18 +36,19 @@ export enum AbStringsChecked {
 }
 
 // Method 1: Get function that accepts a String and returns a set of tools
-var abStrFunc = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrProp");
+// Filter asserts that valid keys are capitalized
+var abStrFunc = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrProp", function(k) {
+  return (k != k.toLowerCase()); 
+});
 
 // The tools function includes getters of type string, when map is provided
 assert(abStrFunc.key.Clone === "Clone");             // Returns key
 assert(abStrFunc.val.Clone === "clone");             // Returns value
 
-var abStrFiltered = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrFiltered", function(k) {
-  return (k != k.toLowerCase()); 
-});
-
 // Tools function works on enum types
 var abStrEnum: AbStrings = AbStrings.Clone;
+
+console.log(abStrFunc(abStrEnum).equals(AbStrings.Move));
 
 assert(abStrFunc(abStrEnum).state.Clone);
 assert(!abStrFunc(abStrEnum).state.Select);

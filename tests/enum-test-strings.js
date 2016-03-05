@@ -16,13 +16,13 @@ var AbStrings = exports.AbStrings;
     AbStringsChecked[AbStringsChecked["Better"] = "better"] = "Better";
 })(exports.AbStringsChecked || (exports.AbStringsChecked = {}));
 var AbStringsChecked = exports.AbStringsChecked;
-var abStrFunc = index_1.EnumStringsType(AbStrings, "abStrProp");
-assert(abStrFunc.key.Clone === "Clone");
-assert(abStrFunc.val.Clone === "clone");
-var abStrFiltered = index_1.EnumStringsType(AbStrings, "abStrFiltered", function (k) {
+var abStrFunc = index_1.EnumStringsType(AbStrings, "abStrProp", function (k) {
     return (k != k.toLowerCase());
 });
+assert(abStrFunc.key.Clone === "Clone");
+assert(abStrFunc.val.Clone === "clone");
 var abStrEnum = AbStrings.Clone;
+console.log(abStrFunc(abStrEnum).equals(AbStrings.Move));
 assert(abStrFunc(abStrEnum).state.Clone);
 assert(!abStrFunc(abStrEnum).state.Select);
 assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
