@@ -286,10 +286,6 @@ The output of the tests give an idea how different flag combination scenarios ar
       √ should perform using value.state property over (1000000) iterations (315ms)
       √ inline logical operation comparison baseline (5000000) iterations
 
-
-  Stats Func/Prop/Base:     68    304     22
-
-
   27 passing (1s)
 
 ```
