@@ -177,7 +177,7 @@ see the [Test results for flags](#test-results-for-flags) far below.
 
 Declare a TypeScript enum using string values. Since these are not officialy supported
 in TypeScript yet, it is necessary to cast them as a type of 'any'. It's also advisable 
-to declare an inteface mirroring the enum, that better describes the string or boolean 
+to declare an interface mirroring the enum, that better describes the string or boolean 
 output provided by some of the tools.
 
 ```
@@ -202,8 +202,8 @@ export interface AbStringsMap {
 }
 ```
 
-Get function that accepts a String and returns a set of tools. The same variations that are available on 
-number enum types also apply to string types.
+Get a wrapper function that accepts a String and returns a set of tools. The same variations 
+for the factory method that are available on number enum types also apply to string types.
 
 ```
 var abStrFunc = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrProp");
@@ -236,7 +236,7 @@ truthy(abStrFunc(abStrEnum).toStringVal() === "clone");
 #### Value testing with String.prototype.prop's methods 
 
 As previously mentioned, the getters are easier to use, but they may be slower. 
-The methods are only assigned to the number prototype if a property name is provided. 
+The methods are only assigned to the string prototype if a property name is provided. 
 
 ```
 // Add Interface that extends a Number with a tools property
