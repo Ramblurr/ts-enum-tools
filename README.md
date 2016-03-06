@@ -293,42 +293,53 @@ All times are reported in milliseconds:
  IE            1537          840         1500  
 ```
 
-The output of the tests give an idea how different flag combination scenarios are handled.
+Given that flags hold discreet numerical values and their importance to an application's stability, 
+the tests warrant a lot of rigor. The output of the tests give an idea how different flag combination 
+scenarios are handled.
+
+Browser based tests can be invoked by opening the html file in the tests folder, and the page should 
+load without hosting. These tests were run in the latest version of major desktop browsers. Fee free to
+report any issues that are found in other scenarios.  
 
 ```
+  EnumStringsType
+    Various logic tests
+      √ should clone
+      √ should not move
+      √ should not sort
+      √ should have property of Clone that is true
+      √ should have property of Move that is false
+      √ should ouput a string
+    Outlier checks
+      √ should maintain closure integrity when re-used
 
- EnumStringsType: Various tests
-   √ should clone
-   √ should not move
-   √ should not sort
-   √ should maintain closure integrity when re-used
-   √ should have property of Clone that is true
-   √ should have property of Move that is false
-   √ should ouput a string
-
- EnumFlagsType: Various tests
-   √ should handle case val(1000) > has(1000):t  any(1000):t  eql(1000):t  state[1000]:t  state[0100]:f
-   √ should handle case val(1100) > has(1100):t  any(1100):t  eql(1100):t  state[1000]:t  state[0100]:t
-   √ should handle case val(0100) > has(1000):f  any(1000):f  eql(1000):f  state[1000]:f  state[0100]:t
-   √ should handle case val(1100) > has(0100):t  any(0100):t  eql(0100):f  state[1000]:t  state[0100]:t
-   √ should handle case val(0100) > has(1100):f  any(1100):t  eql(1100):f  state[1000]:f  state[0100]:t
-   √ should handle case val(0000) > has(1000):f  any(1000):t  eql(1000):f  state[1000]:f  state[0100]:f
-   √ should handle case val(0000) > has(0000):t  any(0000):f  eql(0000):t  state[0000]:t  state[0100]:f
-   √ should handle invalid bit combinations in values and arguments
-   √ should support various flags
-   √ should support various properties
-   √ should return an array consisting of (2) flags
-   √ should ouput a string similar to: "isSortable | isClonable"
-   √ should maintain closure integrity and support re-use
-   √ should be immutable value when using function methods
-   √ should not be immutable value when using prototype properties
-   √ should perform function(value) tools over (1000000) iterations (85ms)
-   √ should perform using value.has property over (1000000) iterations (293ms)
-   √ should perform using value.any property over (1000000) iterations (295ms)
-   √ should perform using value.state property over (1000000) iterations (328ms)
-   √ inline logical operation comparison baseline (5000000) iterations (60ms)
+  EnumFlagsType: Various tests
+    Rigorous logic tests
+      √ should handle case val(1000) > has(1000):t  any(1000):t  eql(1000):t  state[1000]:t  state[0100]:f
+      √ should handle case val(1100) > has(1100):t  any(1100):t  eql(1100):t  state[1000]:t  state[0100]:t
+      √ should handle case val(0100) > has(1000):f  any(1000):f  eql(1000):f  state[1000]:f  state[0100]:t
+      √ should handle case val(1100) > has(0100):t  any(0100):t  eql(0100):f  state[1000]:t  state[0100]:t
+      √ should handle case val(0100) > has(1100):f  any(1100):t  eql(1100):f  state[1000]:f  state[0100]:t
+      √ should handle case val(0000) > has(1000):f  any(1000):t  eql(1000):f  state[1000]:f  state[0100]:f
+      √ should handle case val(0000) > has(0000):t  any(0000):f  eql(0000):t  state[0000]:t  state[0100]:f
+    Miscellaneous logic tests
+      √ should handle invalid bit combinations in values and arguments
+      √ should support various flags
+      √ should support various properties
+      √ should return an array consisting of (2) flags
+      √ should ouput a string similar to: "isSortable | isClonable"
+    Outlier checks
+      √ should maintain closure integrity and support re-use
+      √ should be immutable value when using function methods
+      √ should not be immutable value when using prototype properties
+    Performance checks
+      √ should perform function(value) tools over (1000000) iterations (64ms)
+      √ should perform using value.has property over (1000000) iterations (291ms)
+      √ should perform using value.any property over (1000000) iterations (286ms)
+      √ should perform using value.state property over (1000000) iterations (312ms)
+      √ inline logical operation comparison baseline (5000000) iterations (64ms)
 
 
- 27 passing (1s)
+  27 passing (1s)
 
 ```
