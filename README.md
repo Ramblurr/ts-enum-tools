@@ -1,9 +1,9 @@
 TypeScript Enum Tools
 ==
 
-The TypeScript enum can lend powerful intellisense capabilities, but they leave a few things to be 
-desired with regard to flexibility. These tools help deal with situations where either flag or string 
-enums are necessary.  
+The TypeScript enum can lend powerful intellisense capabilities, but a few additional things are 
+needed to use them in many situations. These tools help deal with situations where either flag 
+or string enums are necessary.  
 
 ### Installation and use
 
@@ -20,7 +20,7 @@ import { EnumStringsType, EnumStringsTool } from 'ts-enum-tools';
 import { EnumFlagsType, EnumFlagsTool } from 'ts-enum-tools';
 ```
 
-### Flags Type Enums
+## Flags Type Enums
 
 Declare a TypeScript enum beginning with unique 32 bit numbers composed of a single bit. 
 Combination flags can then be added, using a logical OR (i.e. isSelectable | isSortable).
@@ -50,36 +50,59 @@ export interface AbFlagsMap {
   isSelectSort:   boolean;
 }
 ```
+Enum flag tests can be accomplished in 3 ways. The first and most obvious method is to utilize
+raw test functions that have been proofed in order to reliably compare values. The enums can also 
+be extended by generating wrapper function that produces a set of tools, and the wrapper factory
+can optionally set a property getter for the tools on the built-in Number primitive prototype.
 
-Generate a function that returns tools when given a number. The tools function 
-is obtained by calling the EnumFlagsType (factory method). 
+
+#### Flag testing with raw test functions
+
+The fastest methods are these simple no-frills functions. But they don't convey very much.
+The alternatives below are more informative in many situations where flags or strings are used.
+
+```
+export var EnumFlagsTest = {
+  has: function(val, flags) { return ((+val & +flags) === +flags); },
+  any: function(val, flags) { return !!(+val & +flags); },
+  eql: function(val, flags) { return (+val === +flags); }
+}
+```
+
+#### Wrapping the enum for extended functionality
+
+There are 3 ways to obtain a function that wraps an enum and binds to a integer value, 
+thereby adding some tools with additional capabilities beyond those shown above. 
+
+The most basic means of obtaining a tools function is to call the EnumFlagsType (factory method)
+with a basic enum type. 
 
 ```
 var abFlgFunc = EnumFlagsType<AbFlags, typeof AbFlags>(AbFlags);
 ```
 
-Provide an additional interface that describes the values of the enum as 
-boolean, and replace the line above as shown in order to enhance intellisense results.
+Replacing the generic typeof enum shown above with an additional interface that 
+describes the values of an enum as boolean, will enhance the tools intellisense output.
 
 ```
 var abFlgFunc = EnumFlagsType<AbFlags, AbFlagsMap>(AbFlags);
 ```
 
-If a property name is provided, then it's used to assign tools to the Number.prototype.prop 
-(warning: this may be illegal in some cultures). 
+If a property name is also provided, then it's used to assign the same tools to the 
+Number.prototype.prop (warning: this may be illegal in some cultures). 
 
 ```
 var abFlgFunc = EnumFlagsType<AbFlags, AbFlagsMap>(AbFlags, "abFlgProp");
 ```
 
 All of the above variations return a function that can be used to bind a value and return
-a set of tools which are valid for that specific value. Prototypes are used to reduce the 
-overhead to a minimum.
+a set of tools which are valid for that specific value. 
 
-#### Flag testing with returned function's methods
 
-The tools function can be put to work on ordinary number types. These are by far the fastest
-methods, because the getters shown next can add significant overhead.
+#### Flag tests using the wrapper function's methods
+
+The tools function can be put to work on ordinary number types. These are slower than the
+raw methods shown first, but they are much fastest than the getters that will be shown next.
 
 ```
 // Tools function works on enum | number types.
@@ -106,23 +129,22 @@ truthy(abFlgFunc(abFlgEnum).toArray().length === 2);
 truthy(abFlgFunc(abFlgEnum).toString().indexOf("isSortable") + 1);
 ```
 
-#### Flag testing with Number.prototype.prop's methods 
+#### Flag tests using Number.prototype getter methods 
 
 For pure convenience (when the data set is not large), the getters are easier to use. 
 The methods are only assigned to the number prototype if a property name is provided. 
-Using a unique name for the property allows other enum types within your project.
 
 To access the extension through intellisense, you must add your own interface describing it. 
 Note that the name of the property should match the string provided to the EnumType factory
 earlier, which in this case is "abFlgProp".
 
 ```
-// Interface extends a Number with a tools property
+// Interface extends a Number primitive with a tools property
 export interface AbNumber extends Number {
   abFlgProp?: EnumFlagsTool<AbFlags, AbFlagsMap>;
 }
 
-// Tools properties are available on extended number types
+// Tools properties are limited to extended number types by TS
 var abFlgVal: AbNumber = AbFlags.isClonable | AbFlags.isSortable;
 
 truthy(abFlgVal.abFlgProp.state.isClonable);
@@ -146,8 +168,12 @@ truthy(abFlgVal.abFlgProp.toArray().length === 2);
 truthy(abFlgVal.abFlgProp.toString().indexOf("isSortable") + 1);
 ```
 
+For additional information on performance and comparisons, 
+see the [Test results for flags](#test-results-for-flags) far below. 
 
-### String Type Enums
+
+
+## String Type Enums
 
 Declare a TypeScript enum using string values. Since these are not officialy supported
 in TypeScript yet, it is necessary to cast them as a type of 'any'. It's also advisable 
@@ -251,7 +277,7 @@ console.log(abStrFiltered.toArray());
 ]
 ```
 
-### Test results
+## Test results for flags
 
 The following output give an idea of the performance of the flag tests. The tools function is 
 considerably faster than the tools prototype methods. This should be taken into consideration when 
@@ -260,11 +286,11 @@ the amount of data being processed is significant.
 All times are reported in milliseconds:
 
 ```
-          functions   properties     baseline
- Nodejs          71          352           21
- Chrome          82          408           22  
- FireFox         50          580           22  
- IE            1537          840         1985  
+          functions   properties     baseline (raw)
+ Nodejs          71          352           60
+ Chrome          82          408           76  
+ FireFox         50          580           58  
+ IE            1537          840         1500  
 ```
 
 The output of the tests give an idea how different flag combination scenarios are handled.
@@ -300,7 +326,7 @@ The output of the tests give an idea how different flag combination scenarios ar
    √ should perform using value.has property over (1000000) iterations (293ms)
    √ should perform using value.any property over (1000000) iterations (295ms)
    √ should perform using value.state property over (1000000) iterations (328ms)
-   √ inline logical operation comparison baseline (5000000) iterations
+   √ inline logical operation comparison baseline (5000000) iterations (60ms)
 
 
  27 passing (1s)

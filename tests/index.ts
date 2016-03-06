@@ -8,7 +8,7 @@ declare var it: any;
 
 var should = require('should');
 
-import { EnumFlagsType, EnumFlagsTool, EnumStringsType, EnumStringsTool } from '../index';
+import { EnumFlagsTest, EnumFlagsType, EnumFlagsTool, EnumStringsType, EnumStringsTool } from '../index';
 
 var Stats = { };
 
@@ -175,7 +175,24 @@ export enum AbFlagsChecked {
   isBetter      = 1 << 4,
 }
 
-// Method 1: Get function that accepts a Number and returns a set of tools
+// Method 1: Simple raw test methods
+var abFlgRaw = AbFlags.isClonable | AbFlags.isSortable;
+
+truthy(EnumFlagsTest.has(abFlgRaw, AbFlags.isClonable));
+falsey(EnumFlagsTest.has(abFlgRaw, AbFlags.isMovable));
+
+truthy(EnumFlagsTest.has(abFlgRaw, AbFlags.isClonable | AbFlags.isSortable));
+falsey(EnumFlagsTest.has(abFlgRaw, AbFlags.isMovable | AbFlags.isSortable));
+
+truthy(EnumFlagsTest.any(abFlgRaw, AbFlags.isMovable | AbFlags.isSortable));
+truthy(EnumFlagsTest.any(abFlgRaw, AbFlags.isClonable));
+falsey(EnumFlagsTest.any(abFlgRaw, AbFlags.isMovable));
+
+truthy(EnumFlagsTest.eql(abFlgRaw, AbFlags.isClonable | AbFlags.isSortable));
+falsey(EnumFlagsTest.eql(abFlgRaw, AbFlags.isClonable));
+falsey(EnumFlagsTest.eql(abFlgRaw, AbFlags.isMovable));
+      
+// Method 2: Get enum wrapper function that binds a Number to a set of tools
 var abFlgFunc = EnumFlagsType<AbFlags, AbFlagsMap>(AbFlags, "abFlgProp");
 
 // Tools function works on enum | number types
@@ -201,7 +218,7 @@ falsey(abFlgFunc(abFlgEnum).eql(AbFlags.isMovable));
 truthy(abFlgFunc(abFlgEnum).toArray().length === 2);
 truthy(abFlgFunc(abFlgEnum).toString().indexOf("isSortable") + 1);
 
-// Method 2: Add Interface that extends a Number with a tools property
+// Method 3: Add Interface that extends a Number with a tools property
 export interface AbNumber extends Number {
   abFlgProp?: EnumFlagsTool<AbFlags, AbFlagsMap>;
 }
@@ -328,7 +345,6 @@ describe('EnumFlagsType: Various tests', function() {
 
   it('should be immutable value when using function methods', function() {
     var changingValue: AbNumber = 0;
-
     // function binds to value passed in, so it gets captured
     changingValue = AbFlags.isClonable | AbFlags.isSortable;
     var toolsImmutable = abFlgFunc(changingValue);
@@ -342,7 +358,6 @@ describe('EnumFlagsType: Various tests', function() {
 
   it('should not be immutable value when using prototype properties', function() {
     var changingValue: AbNumber = 0;
-
     // prototype methods are created on the fly, so it acts on current value
     changingValue = AbFlags.isClonable | AbFlags.isSortable;
     should(changingValue.abFlgProp.state.isClonable).be.true;
@@ -415,25 +430,17 @@ describe('EnumFlagsType: Various tests', function() {
     should(flag).equal(true);
   });
 
-  var iterationTest = function(val) {
-    this.val = val;
-  };
-  iterationTest.prototype.check = function(flag) {
-    return ((this.val & flag) === flag)
-  };
-
   let iterationsBase = 5000000;
   it(`inline logical operation comparison baseline (${iterationsBase}) iterations`, function() {
     let timer = Timer();
 
-    let val1: any = AbFlags.isMovable | AbFlags.isSortable;
-    let val2: any = AbFlags.isClonable | AbFlags.isSortable;
+    let valA: any = AbFlags.isMovable | AbFlags.isSortable;
+    let valB: any = AbFlags.isClonable | AbFlags.isSortable;
     let flag = false;
     for (let i = 0; i < iterationsBase; i++) {
-      let testObject = new iterationTest(val1);
-      flag = testObject.check(val2);
+      flag = EnumFlagsTest.has(valA, AbFlags.isMovable);  // t
+      flag = EnumFlagsTest.any(valB, AbFlags.isMovable);  // f
     }
-    should(flag).equal(false);
 
     Stats["base"] = timer.elapsed();
   });

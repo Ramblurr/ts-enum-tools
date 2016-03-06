@@ -30,5 +30,11 @@ export interface EnumStringsFunc<E, e> {
     val: e;
     key: e;
 }
+export declare var EnumFlagsTest: {
+    has: (val: any, flags: any) => boolean;
+    any: (val: any, flags: any) => boolean;
+    eql: (val: any, flags: any) => boolean;
+};
+export declare var EnumFlagsTestAlt: (val: any) => void;
 export declare function EnumFlagsType<E, e>(enumeration: any, prop?: string): EnumFlagsFunc<E, e>;
 export declare function EnumStringsType<E, e>(enumeration: any, prop?: string, validKeysFilter?: Function): EnumStringsFunc<E, e>;

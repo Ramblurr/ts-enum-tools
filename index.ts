@@ -34,6 +34,32 @@ export interface EnumStringsFunc<E, e> {
 }
 
 /**
+ * Fastest methods are these simple no frills comparison tests.
+ */
+export var EnumFlagsTest = {
+  has: function(val, flags) {
+    return ((+val & +flags) === +flags);
+  },
+  any: function(val, flags) {
+    return !!(+val & +flags);
+  },
+  eql: function(val, flags) {
+    return (+val === +flags);
+  }
+}
+
+/**
+ * This alternative using prototype method may be faster - WTH ?
+ */
+export var EnumFlagsTestAlt = function(val) {
+  this.val = val;
+};
+EnumFlagsTestAlt.prototype.has = function(flags) {
+  return ((+this.val & +flags) === +flags)
+};
+
+
+/**
  * Returns a tools assortment for flag enums, and optionally implements them as a property of
  * Number.prototype (named getter). The tools automatically bind to each unique Number.
  */

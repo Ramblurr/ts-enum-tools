@@ -101,6 +101,17 @@ var AbFlags = exports.AbFlags;
     AbFlagsChecked[AbFlagsChecked["isBetter"] = 16] = "isBetter";
 })(exports.AbFlagsChecked || (exports.AbFlagsChecked = {}));
 var AbFlagsChecked = exports.AbFlagsChecked;
+var abFlgRaw = AbFlags.isClonable | AbFlags.isSortable;
+truthy(index_1.EnumFlagsTest.has(abFlgRaw, AbFlags.isClonable));
+falsey(index_1.EnumFlagsTest.has(abFlgRaw, AbFlags.isMovable));
+truthy(index_1.EnumFlagsTest.has(abFlgRaw, AbFlags.isClonable | AbFlags.isSortable));
+falsey(index_1.EnumFlagsTest.has(abFlgRaw, AbFlags.isMovable | AbFlags.isSortable));
+truthy(index_1.EnumFlagsTest.any(abFlgRaw, AbFlags.isMovable | AbFlags.isSortable));
+truthy(index_1.EnumFlagsTest.any(abFlgRaw, AbFlags.isClonable));
+falsey(index_1.EnumFlagsTest.any(abFlgRaw, AbFlags.isMovable));
+truthy(index_1.EnumFlagsTest.eql(abFlgRaw, AbFlags.isClonable | AbFlags.isSortable));
+falsey(index_1.EnumFlagsTest.eql(abFlgRaw, AbFlags.isClonable));
+falsey(index_1.EnumFlagsTest.eql(abFlgRaw, AbFlags.isMovable));
 var abFlgFunc = index_1.EnumFlagsType(AbFlags, "abFlgProp");
 var abFlgEnum = AbFlags.isClonable | AbFlags.isSortable;
 truthy(abFlgFunc(abFlgEnum).state.isClonable);
@@ -295,23 +306,16 @@ describe('EnumFlagsType: Various tests', function () {
         }
         should(flag).equal(true);
     });
-    var iterationTest = function (val) {
-        this.val = val;
-    };
-    iterationTest.prototype.check = function (flag) {
-        return ((this.val & flag) === flag);
-    };
     var iterationsBase = 5000000;
     it("inline logical operation comparison baseline (" + iterationsBase + ") iterations", function () {
         var timer = Timer();
-        var val1 = AbFlags.isMovable | AbFlags.isSortable;
-        var val2 = AbFlags.isClonable | AbFlags.isSortable;
+        var valA = AbFlags.isMovable | AbFlags.isSortable;
+        var valB = AbFlags.isClonable | AbFlags.isSortable;
         var flag = false;
         for (var i = 0; i < iterationsBase; i++) {
-            var testObject = new iterationTest(val1);
-            flag = testObject.check(val2);
+            flag = index_1.EnumFlagsTest.has(valA, AbFlags.isMovable);
+            flag = index_1.EnumFlagsTest.any(valB, AbFlags.isMovable);
         }
-        should(flag).equal(false);
         Stats["base"] = timer.elapsed();
     });
     after(function () {

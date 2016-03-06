@@ -1,3 +1,20 @@
+exports.EnumFlagsTest = {
+    has: function (val, flags) {
+        return ((+val & +flags) === +flags);
+    },
+    any: function (val, flags) {
+        return !!(+val & +flags);
+    },
+    eql: function (val, flags) {
+        return (+val === +flags);
+    }
+};
+exports.EnumFlagsTestAlt = function (val) {
+    this.val = val;
+};
+exports.EnumFlagsTestAlt.prototype.has = function (flags) {
+    return ((+this.val & +flags) === +flags);
+};
 function EnumFlagsType(enumeration, prop) {
     var keys = {};
     var hash = Object.keys(enumeration).reduce(function (obj, k) {
