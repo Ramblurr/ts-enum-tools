@@ -301,6 +301,15 @@ Browser based tests can be invoked by opening the html file in the tests folder,
 load without hosting. These tests were run in the latest version of major desktop browsers. Fee free to
 report any issues that are found in other scenarios.  
 
+You can include these mocha/should based tests in your own project, by simply importing them into a 
+file within your local tests folder. These statements include a module without any local references. 
+
+```
+import 'ts-enum-tools/tests';     // TS
+
+require('ts-enum-tools/tests');   // JS
+``` 
+
 ```
   EnumStringsType
     Various logic tests
