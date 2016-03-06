@@ -17,7 +17,7 @@ Import the type of functionality needed, depending on whether an enum is a type 
 
 ```
 import { EnumStringsType, EnumStringsTool } from 'ts-enum-tools';
-import { EnumFlagsType, EnumFlagsTool } from 'ts-enum-tools';
+import { EnumFlagsType, EnumFlagsTool, EnumFlagsTest } from 'ts-enum-tools';
 ```
 
 ## Flags Type Enums
