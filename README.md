@@ -294,15 +294,15 @@ All times are reported in milliseconds:
 ```
 
 Given that flags hold discreet numerical values and their importance to an application's stability, 
-the tests warrant a lot of rigor. The output of the tests give an idea how different flag combination 
+the tests warrant some rigor. The output of the tests also gives an idea how different flag combination 
 scenarios are handled.
 
-Browser based tests can be invoked by opening the html file in the tests folder, and the page should 
-load without hosting. These tests were run in the latest version of major desktop browsers. Fee free to
-report any issues that are found in other scenarios.  
+Browser based tests are identical and can be invoked by opening the html file in the tests folder.
+The page should load without the need for hosting. These tests were already ran in the latest version 
+of major desktop browsers. Kindly report any issues found in other scenarios.  
 
-You can include these mocha/should based tests in your own project, by simply importing them into a 
-file within your local tests folder. These statements include a module without any local references. 
+You can also include the mocha/should based tests in your own project, by simply importing them into a 
+file within your local tests path. These statements include a module without any local references. 
 
 ```
 import 'ts-enum-tools/tests';     // TS
