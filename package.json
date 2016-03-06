@@ -1,6 +1,6 @@
 {
   "name": "ts-enum-tools",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tools for evaluating TypeScript enum types",
   "main": "index.js",
   "typings": "index",
