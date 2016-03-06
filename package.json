@@ -1,10 +1,12 @@
 {
   "name": "ts-enum-tools",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Tools for evaluating TypeScript enum types",
   "main": "index.js",
   "typings": "index",
-  "browser": { "./lib-cov/mocha": false },  
+  "browser": {
+    "./lib-cov/mocha": false
+  },
   "scripts": {
     "build": "tsc",
     "test": "./node_modules/.bin/mocha ./tests/index.js"
