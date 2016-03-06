@@ -1,6 +1,6 @@
 var should = require('should');
-var assert = require('assert');
 var index_1 = require('../index');
+var Stats = {};
 function Timer() {
     return {
         start: new Date().getTime(),
@@ -11,7 +11,18 @@ function PadValue(value, length) {
     var padded = " " + value;
     return (padded.length <= length) ? PadValue(padded, length) : padded;
 }
-var Stats = {};
+function truthy(val) {
+    if (!val) {
+        var err = new Error("Invalid truth assertion");
+        throw err;
+    }
+}
+function falsey(val) {
+    if (val) {
+        var err = new Error("Invalid false assertion");
+        throw err;
+    }
+}
 (function (AbStrings) {
     AbStrings[AbStrings["None"] = "none"] = "None";
     AbStrings[AbStrings["Select"] = "sel"] = "Select";
@@ -29,22 +40,22 @@ var AbStringsChecked = exports.AbStringsChecked;
 var abStrFunc = index_1.EnumStringsType(AbStrings, "abStrProp", function (k) {
     return (k != k.toLowerCase());
 });
-assert(abStrFunc.key.Clone === "Clone");
-assert(abStrFunc.val.Clone === "clone");
+truthy(abStrFunc.key.Clone === "Clone");
+truthy(abStrFunc.val.Clone === "clone");
 var abStrEnum = AbStrings.Clone;
-assert(abStrFunc(abStrEnum).state.Clone);
-assert(!abStrFunc(abStrEnum).state.Select);
-assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
-assert(!abStrFunc(abStrEnum).equals(AbStrings.Move));
-assert(abStrFunc(abStrEnum).toStringKey() === "Clone");
-assert(abStrFunc(abStrEnum).toStringVal() === "clone");
+truthy(abStrFunc(abStrEnum).state.Clone);
+falsey(abStrFunc(abStrEnum).state.Select);
+truthy(abStrFunc(abStrEnum).equals(AbStrings.Clone));
+falsey(abStrFunc(abStrEnum).equals(AbStrings.Move));
+truthy(abStrFunc(abStrEnum).toStringKey() === "Clone");
+truthy(abStrFunc(abStrEnum).toStringVal() === "clone");
 var abStrVal = abStrFunc.val.Clone;
-assert(abStrVal.abStrProp.state.Clone === true);
-assert(!abStrVal.abStrProp.state.Move);
-assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
-assert(!abStrVal.abStrProp.equals(AbStrings.Move));
-assert(abStrVal.abStrProp.toStringKey() === "Clone");
-assert(abStrVal.abStrProp.toStringVal() === "clone");
+truthy(abStrVal.abStrProp.state.Clone === true);
+falsey(abStrVal.abStrProp.state.Move);
+truthy(abStrFunc(abStrEnum).equals(AbStrings.Clone));
+falsey(abStrVal.abStrProp.equals(AbStrings.Move));
+truthy(abStrVal.abStrProp.toStringKey() === "Clone");
+truthy(abStrVal.abStrProp.toStringVal() === "clone");
 describe('EnumStringsType: Various tests', function () {
     describe('Native strings: ' + abStrVal.abStrProp.toString(), function () {
         it('should clone', function () {
@@ -94,28 +105,35 @@ var AbFlags = exports.AbFlags;
 var AbFlagsChecked = exports.AbFlagsChecked;
 var abFlgFunc = index_1.EnumFlagsType(AbFlags, "abFlgProp");
 var abFlgEnum = AbFlags.isClonable | AbFlags.isSortable;
-assert(abFlgFunc(abFlgEnum).state.isClonable);
-assert(!abFlgFunc(abFlgEnum).state.isMovable);
-assert(abFlgFunc(abFlgEnum).has(AbFlags.isClonable) === true);
-assert(abFlgFunc(abFlgEnum).has(AbFlags.isMovable) === false);
-assert(abFlgFunc(abFlgEnum).has(AbFlags.isClonable | AbFlags.isSortable) === true);
-assert(abFlgFunc(abFlgEnum).has(AbFlags.isMovable | AbFlags.isSortable) === false);
-assert(abFlgFunc(abFlgEnum).any(AbFlags.isMovable) === false);
-assert(abFlgFunc(abFlgEnum).toArray().length === 2);
-assert(abFlgFunc(abFlgEnum).toString().indexOf("isSortable") + 1);
-assert(abFlgFunc(abFlgEnum).toString().indexOf("isClonable") + 1);
+truthy(abFlgFunc(abFlgEnum).state.isClonable);
+falsey(abFlgFunc(abFlgEnum).state.isMovable);
+truthy(abFlgFunc(abFlgEnum).has(AbFlags.isClonable));
+falsey(abFlgFunc(abFlgEnum).has(AbFlags.isMovable));
+truthy(abFlgFunc(abFlgEnum).has(AbFlags.isClonable | AbFlags.isSortable));
+falsey(abFlgFunc(abFlgEnum).has(AbFlags.isMovable | AbFlags.isSortable));
+truthy(abFlgFunc(abFlgEnum).any(AbFlags.isMovable | AbFlags.isSortable));
+truthy(abFlgFunc(abFlgEnum).any(AbFlags.isClonable));
+falsey(abFlgFunc(abFlgEnum).any(AbFlags.isMovable));
+truthy(abFlgFunc(abFlgEnum).eql(AbFlags.isClonable | AbFlags.isSortable));
+falsey(abFlgFunc(abFlgEnum).eql(AbFlags.isClonable));
+falsey(abFlgFunc(abFlgEnum).eql(AbFlags.isMovable));
+truthy(abFlgFunc(abFlgEnum).toArray().length === 2);
+truthy(abFlgFunc(abFlgEnum).toString().indexOf("isSortable") + 1);
 var abFlgVal = AbFlags.isClonable | AbFlags.isSortable;
-assert(abFlgVal.abFlgProp.state.isClonable);
-assert(!abFlgVal.abFlgProp.state.isMovable);
-assert(abFlgVal.abFlgProp.has(AbFlags.isClonable) === true);
-assert(abFlgVal.abFlgProp.has(AbFlags.isMovable) === false);
-assert(abFlgVal.abFlgProp.has(AbFlags.isClonable | AbFlags.isSortable) === true);
-assert(abFlgVal.abFlgProp.has(AbFlags.isMovable | AbFlags.isSortable) === false);
-assert(abFlgVal.abFlgProp.any(AbFlags.isMovable | AbFlags.isSortable) === true);
-assert(abFlgVal.abFlgProp.any(AbFlags.isMovable) === false);
-assert(abFlgVal.abFlgProp.toArray().length === 2);
-assert(abFlgVal.abFlgProp.toString().indexOf("isSortable") + 1);
-assert(abFlgVal.abFlgProp.toString().indexOf("isClonable") + 1);
+truthy(abFlgVal.abFlgProp.state.isClonable);
+falsey(abFlgVal.abFlgProp.state.isMovable);
+truthy(abFlgVal.abFlgProp.has(AbFlags.isClonable));
+falsey(abFlgVal.abFlgProp.has(AbFlags.isMovable));
+truthy(abFlgVal.abFlgProp.has(AbFlags.isClonable | AbFlags.isSortable));
+falsey(abFlgVal.abFlgProp.has(AbFlags.isMovable | AbFlags.isSortable));
+truthy(abFlgVal.abFlgProp.any(AbFlags.isMovable | AbFlags.isSortable));
+truthy(abFlgVal.abFlgProp.any(AbFlags.isClonable));
+falsey(abFlgVal.abFlgProp.any(AbFlags.isMovable));
+truthy(abFlgVal.abFlgProp.eql(AbFlags.isClonable | AbFlags.isSortable));
+falsey(abFlgVal.abFlgProp.eql(AbFlags.isClonable));
+falsey(abFlgVal.abFlgProp.eql(AbFlags.isMovable));
+truthy(abFlgVal.abFlgProp.toArray().length === 2);
+truthy(abFlgVal.abFlgProp.toString().indexOf("isSortable") + 1);
 describe('EnumFlagsType: Various tests', function () {
     this.timeout(0);
     describe('Native flags: ' + abFlgVal.abFlgProp.toArray().join(", "), function () {
@@ -301,6 +319,5 @@ describe('EnumFlagsType: Various tests', function () {
         });
     });
     after(function () {
-        console.log("\n\n  Stats Func/Prop/Base:" + PadValue(Stats["func"], 6) + PadValue(Stats["prop"], 6) + PadValue(Stats["base"], 6));
     });
 });

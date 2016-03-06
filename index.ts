@@ -43,7 +43,7 @@ export function EnumFlagsType<E, e>(enumeration, prop?: string): EnumFlagsFunc<E
   var hash = Object.keys(enumeration).reduce(function(obj, k) {
     // Excludes bi-directional numeric keys
     if (isNaN(<any>k)) {
-      obj[k] = enumeration[k];
+      obj[k] = +enumeration[k];
     }
     keys[k] = k;
     return obj;
@@ -55,7 +55,7 @@ export function EnumFlagsType<E, e>(enumeration, prop?: string): EnumFlagsFunc<E
   };
   Object.keys(hash).forEach(function(k) {
     Object.defineProperty(State.prototype, k, { get: function() {
-      return !!hash[k] ? ((this.methods.val & +hash[k]) === +hash[k]) : !this.methods.val;
+      return !!hash[k] ? ((this.methods.val & hash[k]) === hash[k]) : !this.methods.val;
     }});
   });
 
@@ -68,25 +68,25 @@ export function EnumFlagsType<E, e>(enumeration, prop?: string): EnumFlagsFunc<E
     return (this.val === +flags);
   };
   Methods.prototype.has = function(flags) {
-    return ((this.val & +flags) === +flags);
+    return (+(this.val & +flags) === +flags);
   };
   Methods.prototype.any = function(flags) {
-    return ((this.val & +flags) > 0);
+    return !!(this.val & +flags);
   };
   Methods.prototype.toArray = function() {
     return Object.keys(hash).filter(function(k) {
-      return !!hash[k] && ((this.val & +hash[k]) === +hash[k]); // all bits weed out combos
+      return !!hash[k] && ((this.val & hash[k]) === hash[k]); // all bits weed out combos
     }.bind(this));
   };
   Methods.prototype.toString = function() {
     return Object.keys(hash).filter(function(k) {
-      return !!hash[k] && ((this.val & +hash[k]) === +hash[k]);
+      return !!hash[k] && ((this.val & hash[k]) === hash[k]);
     }.bind(this)).join(' | ');
   };
 
   // This either runs in the context of a primitive or a value must be provided
   var BindValue: any = function BindValue(val?: number): EnumFlagsTool<E, e> {
-    return new Methods((val != null) ? val : this);
+    return new Methods((val === undefined) ? this : val);
   };
 
   BindValue.val = hash;
@@ -159,7 +159,7 @@ export function EnumStringsType<E, e>(enumeration, prop?: string, validKeysFilte
   
   // This either runs in the context of a primitive or a string must be provided
   var BindString: any = function (str?: string): EnumStringsTool<E, e> {
-    return new Methods((str != null) ? str : this);
+    return new Methods((str === undefined) ? this : str);
   };
   
   BindString.val = hash;

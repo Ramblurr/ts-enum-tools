@@ -85,16 +85,25 @@ methods, because the getters shown next can add significant overhead.
 // Tools function works on enum | number types.
 var abFlgEnum: AbFlags = AbFlags.isClonable | AbFlags.isSortable;
 
-assert(abFlgFunc(abFlgEnum).state.isClonable);
-assert(!abFlgFunc(abFlgEnum).state.isMovable);
-assert(abFlgFunc(abFlgEnum).all(AbFlags.isClonable) === true);
-assert(abFlgFunc(abFlgEnum).all(AbFlags.isMovable) === false);
-assert(abFlgFunc(abFlgEnum).all(AbFlags.isClonable | AbFlags.isSortable) === true);
-assert(abFlgFunc(abFlgEnum).all(AbFlags.isMovable | AbFlags.isSortable) === false);
-assert(abFlgFunc(abFlgEnum).any(AbFlags.isMovable) === false);
-assert(abFlgFunc(abFlgEnum).toArray().length === 2);
-assert(abFlgFunc(abFlgEnum).toString().indexOf("isSortable") + 1);
-assert(abFlgFunc(abFlgEnum).toString().indexOf("isClonable") + 1);
+truthy(abFlgFunc(abFlgEnum).state.isClonable);
+falsey(abFlgFunc(abFlgEnum).state.isMovable);
+
+truthy(abFlgFunc(abFlgEnum).has(AbFlags.isClonable));
+falsey(abFlgFunc(abFlgEnum).has(AbFlags.isMovable));
+
+truthy(abFlgFunc(abFlgEnum).has(AbFlags.isClonable | AbFlags.isSortable));
+falsey(abFlgFunc(abFlgEnum).has(AbFlags.isMovable | AbFlags.isSortable));
+
+truthy(abFlgFunc(abFlgEnum).any(AbFlags.isMovable | AbFlags.isSortable));
+truthy(abFlgFunc(abFlgEnum).any(AbFlags.isClonable));
+falsey(abFlgFunc(abFlgEnum).any(AbFlags.isMovable));
+
+truthy(abFlgFunc(abFlgEnum).eql(AbFlags.isClonable | AbFlags.isSortable));
+falsey(abFlgFunc(abFlgEnum).eql(AbFlags.isClonable));
+falsey(abFlgFunc(abFlgEnum).eql(AbFlags.isMovable));
+
+truthy(abFlgFunc(abFlgEnum).toArray().length === 2);
+truthy(abFlgFunc(abFlgEnum).toString().indexOf("isSortable") + 1);
 ```
 
 #### Flag testing with Number.prototype.prop's methods 
@@ -116,17 +125,25 @@ export interface AbNumber extends Number {
 // Tools properties are available on extended number types
 var abFlgVal: AbNumber = AbFlags.isClonable | AbFlags.isSortable;
 
-assert(abFlgVal.abFlgProp.state.isClonable);
-assert(!abFlgVal.abFlgProp.state.isMovable);
-assert(abFlgVal.abFlgProp.all(AbFlags.isClonable) === true);
-assert(abFlgVal.abFlgProp.all(AbFlags.isMovable) === false);
-assert(abFlgVal.abFlgProp.all(AbFlags.isClonable | AbFlags.isSortable) === true);
-assert(abFlgVal.abFlgProp.all(AbFlags.isMovable | AbFlags.isSortable) === false);
-assert(abFlgVal.abFlgProp.any(AbFlags.isMovable | AbFlags.isSortable) === true);
-assert(abFlgVal.abFlgProp.any(AbFlags.isMovable) === false);
-assert(abFlgVal.abFlgProp.toArray().length === 2);
-assert(abFlgVal.abFlgProp.toString().indexOf("isSortable") + 1);
-assert(abFlgVal.abFlgProp.toString().indexOf("isClonable") + 1);
+truthy(abFlgVal.abFlgProp.state.isClonable);
+falsey(abFlgVal.abFlgProp.state.isMovable);
+
+truthy(abFlgVal.abFlgProp.has(AbFlags.isClonable));
+falsey(abFlgVal.abFlgProp.has(AbFlags.isMovable));
+
+truthy(abFlgVal.abFlgProp.has(AbFlags.isClonable | AbFlags.isSortable));
+falsey(abFlgVal.abFlgProp.has(AbFlags.isMovable | AbFlags.isSortable));
+
+truthy(abFlgVal.abFlgProp.any(AbFlags.isMovable | AbFlags.isSortable));
+truthy(abFlgVal.abFlgProp.any(AbFlags.isClonable));
+falsey(abFlgVal.abFlgProp.any(AbFlags.isMovable));
+
+truthy(abFlgVal.abFlgProp.eql(AbFlags.isClonable | AbFlags.isSortable));
+falsey(abFlgVal.abFlgProp.eql(AbFlags.isClonable));
+falsey(abFlgVal.abFlgProp.eql(AbFlags.isMovable));
+
+truthy(abFlgVal.abFlgProp.toArray().length === 2);
+truthy(abFlgVal.abFlgProp.toString().indexOf("isSortable") + 1);
 ```
 
 
@@ -182,12 +199,12 @@ The tools function can be put to work on ordinary string types.
 // Tools function works on enum | number types
 var abStrEnum: AbStrings = AbStrings.Clone;
 
-assert(abStrFunc(abStrEnum).state.Clone);
-assert(!abStrFunc(abStrEnum).state.Select);
-assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
-assert(!abStrFunc(abStrEnum).equals(AbStrings.Move));
-assert(abStrFunc(abStrEnum).toStringKey() === "Clone");
-assert(abStrFunc(abStrEnum).toStringVal() === "clone");
+truthy(abStrFunc(abStrEnum).state.Clone);
+falsey(abStrFunc(abStrEnum).state.Select);
+truthy(abStrFunc(abStrEnum).equals(AbStrings.Clone));
+falsey(abStrFunc(abStrEnum).equals(AbStrings.Move));
+truthy(abStrFunc(abStrEnum).toStringKey() === "Clone");
+truthy(abStrFunc(abStrEnum).toStringVal() === "clone");
 ```
 
 #### Value testing with String.prototype.prop's methods 
@@ -204,12 +221,12 @@ export interface AbString extends String {
 // Tools properties are then accessible on extended string types
 var abStrVal: AbString = abStrFunc.str.Clone;
 
-assert(abStrVal.abStrProp.state.Clone);
-assert(!abStrVal.abStrProp.state.Move);
-assert(abStrFunc(abStrEnum).equals(AbStrings.Clone));
-assert(!abStrVal.abStrProp.equals(AbStrings.Move));
-assert(abStrVal.abStrProp.toStringKey() === "Clone");
-assert(abStrVal.abStrProp.toStringVal() === "clone");
+truthy(abStrVal.abStrProp.state.Clone === true);
+falsey(abStrVal.abStrProp.state.Move);
+truthy(abStrFunc(abStrEnum).equals(AbStrings.Clone));
+falsey(abStrVal.abStrProp.equals(AbStrings.Move));
+truthy(abStrVal.abStrProp.toStringKey() === "Clone");
+truthy(abStrVal.abStrProp.toStringVal() === "clone");
 ```
 
 #### Filtering string enum keys 

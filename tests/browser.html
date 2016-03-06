@@ -29,10 +29,7 @@
     
     // Modules will insert exports into this global construct
     var exports = {
-      should: should,
-      assert: function(val) {
-        if (!val) throw "invalid assertion";
-      },
+      should: should
     };
     
     // Providing a require polyfill for the browser run modules

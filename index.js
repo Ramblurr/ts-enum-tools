@@ -2,7 +2,7 @@ function EnumFlagsType(enumeration, prop) {
     var keys = {};
     var hash = Object.keys(enumeration).reduce(function (obj, k) {
         if (isNaN(k)) {
-            obj[k] = enumeration[k];
+            obj[k] = +enumeration[k];
         }
         keys[k] = k;
         return obj;
@@ -12,7 +12,7 @@ function EnumFlagsType(enumeration, prop) {
     };
     Object.keys(hash).forEach(function (k) {
         Object.defineProperty(State.prototype, k, { get: function () {
-                return !!hash[k] ? ((this.methods.val & +hash[k]) === +hash[k]) : !this.methods.val;
+                return !!hash[k] ? ((this.methods.val & hash[k]) === hash[k]) : !this.methods.val;
             } });
     });
     var Methods = function (val) {
@@ -23,23 +23,23 @@ function EnumFlagsType(enumeration, prop) {
         return (this.val === +flags);
     };
     Methods.prototype.has = function (flags) {
-        return ((this.val & +flags) === +flags);
+        return (+(this.val & +flags) === +flags);
     };
     Methods.prototype.any = function (flags) {
-        return ((this.val & +flags) > 0);
+        return !!(this.val & +flags);
     };
     Methods.prototype.toArray = function () {
         return Object.keys(hash).filter(function (k) {
-            return !!hash[k] && ((this.val & +hash[k]) === +hash[k]);
+            return !!hash[k] && ((this.val & hash[k]) === hash[k]);
         }.bind(this));
     };
     Methods.prototype.toString = function () {
         return Object.keys(hash).filter(function (k) {
-            return !!hash[k] && ((this.val & +hash[k]) === +hash[k]);
+            return !!hash[k] && ((this.val & hash[k]) === hash[k]);
         }.bind(this)).join(' | ');
     };
     var BindValue = function BindValue(val) {
-        return new Methods((val != null) ? val : this);
+        return new Methods((val === undefined) ? this : val);
     };
     BindValue.val = hash;
     BindValue.key = keys;
@@ -98,7 +98,7 @@ function EnumStringsType(enumeration, prop, validKeysFilter) {
         return this.str;
     };
     var BindString = function (str) {
-        return new Methods((str != null) ? str : this);
+        return new Methods((str === undefined) ? this : str);
     };
     BindString.val = hash;
     BindString.key = keys;
