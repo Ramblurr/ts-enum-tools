@@ -270,39 +270,39 @@ All times are reported in milliseconds:
 The output of the tests give an idea how different flag combination scenarios are handled.
 
 ```
-  EnumStringsType: Various tests
-    Native strings: [object Object]
-      √ should clone
-      √ should not move
-      √ should not sort
-      √ should maintain closure integrity when re-used
-      √ should have property of Clone that is true
-      √ should have property of Move that is false
-      √ should ouput a string
 
-  EnumFlagsType: Various tests
-    Native flags: isSortable, isClonable
-      √ should handle case val(1000) > has(1000):t  any(1000):t  eql(1000):t  state[1000]:t  state[0100]:f
-      √ should handle case val(1100) > has(1100):t  any(1100):t  eql(1100):t  state[1000]:t  state[0100]:t
-      √ should handle case val(0100) > has(1000):f  any(1000):f  eql(1000):f  state[1000]:f  state[0100]:t
-      √ should handle case val(1100) > has(0100):t  any(0100):t  eql(0100):f  state[1000]:t  state[0100]:t
-      √ should handle case val(0100) > has(1100):f  any(1100):t  eql(1100):f  state[1000]:f  state[0100]:t
-      √ should handle case val(0000) > has(1000):f  any(1000):t  eql(1000):f  state[1000]:f  state[0100]:f
-      √ should handle case val(0000) > has(0000):t  any(0000):f  eql(0000):t  state[0000]:t  state[0100]:f
-      √ should handle invalid bit combinations in values and arguments
-      √ should support various flags
-      √ should support various properties
-      √ should return an array consisting of (2) flags
-      √ should ouput a string similar to: "isSortable | isClonable"
-      √ should maintain closure integrity and support re-use
-      √ should be immutable value when using function methods
-      √ should not be immutable value when using prototype properties
-      √ should perform function(value) tools over (1000000) iterations (69ms)
-      √ should perform using value.has property over (1000000) iterations (304ms)
-      √ should perform using value.any property over (1000000) iterations (292ms)
-      √ should perform using value.state property over (1000000) iterations (315ms)
-      √ inline logical operation comparison baseline (5000000) iterations
+ EnumStringsType: Various tests
+   √ should clone
+   √ should not move
+   √ should not sort
+   √ should maintain closure integrity when re-used
+   √ should have property of Clone that is true
+   √ should have property of Move that is false
+   √ should ouput a string
 
-  27 passing (1s)
+ EnumFlagsType: Various tests
+   √ should handle case val(1000) > has(1000):t  any(1000):t  eql(1000):t  state[1000]:t  state[0100]:f
+   √ should handle case val(1100) > has(1100):t  any(1100):t  eql(1100):t  state[1000]:t  state[0100]:t
+   √ should handle case val(0100) > has(1000):f  any(1000):f  eql(1000):f  state[1000]:f  state[0100]:t
+   √ should handle case val(1100) > has(0100):t  any(0100):t  eql(0100):f  state[1000]:t  state[0100]:t
+   √ should handle case val(0100) > has(1100):f  any(1100):t  eql(1100):f  state[1000]:f  state[0100]:t
+   √ should handle case val(0000) > has(1000):f  any(1000):t  eql(1000):f  state[1000]:f  state[0100]:f
+   √ should handle case val(0000) > has(0000):t  any(0000):f  eql(0000):t  state[0000]:t  state[0100]:f
+   √ should handle invalid bit combinations in values and arguments
+   √ should support various flags
+   √ should support various properties
+   √ should return an array consisting of (2) flags
+   √ should ouput a string similar to: "isSortable | isClonable"
+   √ should maintain closure integrity and support re-use
+   √ should be immutable value when using function methods
+   √ should not be immutable value when using prototype properties
+   √ should perform function(value) tools over (1000000) iterations (85ms)
+   √ should perform using value.has property over (1000000) iterations (293ms)
+   √ should perform using value.any property over (1000000) iterations (295ms)
+   √ should perform using value.state property over (1000000) iterations (328ms)
+   √ inline logical operation comparison baseline (5000000) iterations
+
+
+ 27 passing (1s)
 
 ```
