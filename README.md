@@ -144,7 +144,7 @@ export interface AbNumber extends Number {
   abFlgProp?: EnumFlagsTool<AbFlags, AbFlagsMap>;
 }
 
-// Tools properties are limited to extended number types by TS
+// Tools properties are available on extended Number types (i.e. AbNumber)
 var abFlgVal: AbNumber = AbFlags.isClonable | AbFlags.isSortable;
 
 truthy(abFlgVal.abFlgProp.state.isClonable);
@@ -222,7 +222,7 @@ assert(abStrFunc.val.Clone === "clone");
 The tools function can be put to work on ordinary string types. 
 
 ```
-// Tools function works on enum | number types
+// Tools function works on enum | string types
 var abStrEnum: AbStrings = AbStrings.Clone;
 
 truthy(abStrFunc(abStrEnum).state.Clone);
@@ -239,12 +239,12 @@ As previously mentioned, the getters are easier to use, but they may be slower.
 The methods are only assigned to the string prototype if a property name is provided. 
 
 ```
-// Add Interface that extends a Number with a tools property
+// Add Interface that extends a String with a tools property
 export interface AbString extends String {
   abStrProp?: EnumStringsTool<AbStrings, AbStringsMap>;
 }
 
-// Tools properties are then accessible on extended string types
+// Tools properties are then accessible on extended String types (i.e. AbString)
 var abStrVal: AbString = abStrFunc.str.Clone;
 
 truthy(abStrVal.abStrProp.state.Clone === true);
@@ -265,6 +265,8 @@ may be provided to do so. The function receives each potential key and returns T
 var abStrFiltered = EnumStringsType<AbStrings, AbStringsMap>(AbStrings, "abStrFiltered", 
                                                   function(k) { return (k != k.toLowerCase()); });
   
+// Outputs the string enum with filtered keys
+//   the bi-directional enum values are thereby excluded (i.e. enum[val] = key)
 console.log(abStrFiltered.toArray());
 
 [ 
